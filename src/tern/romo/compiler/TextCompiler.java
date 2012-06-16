@@ -29,7 +29,6 @@ import tern.romo.compiler.parser.*;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.IOException;
 import java.util.Map;
 import java.util.LinkedList;
 

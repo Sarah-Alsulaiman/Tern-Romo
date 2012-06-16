@@ -25,8 +25,6 @@
 package tern.romo.compiler;
 
 import topcodes.*;
-import java.io.PrintWriter;
-
 
 /**
  * Represents an ingoing or outgoing connection from one statement

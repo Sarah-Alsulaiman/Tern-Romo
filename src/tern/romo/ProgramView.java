@@ -134,7 +134,7 @@ public class ProgramView extends View implements Debugger, Runnable {
       // Use nxt_statements and nxt_driver for LEGO NXT
       //------------------------------------------------------
       this.compiler = new TangibleCompiler(getResources(),
-                                           R.xml.nxt_statements,
+                                           R.xml.romo_statements,
                                            R.raw.romo_driver);
       
       //------------------------------------------------------
@@ -197,16 +197,12 @@ public class ProgramView extends View implements Debugger, Runnable {
                   restartHandler);
       
       this.config =
-      //new TButton(getResources(),
-      //            R.drawable.roberto,
-      //            R.drawable.roberto,
-      //            R.drawable.roberto,
-      //            emptyHandler);
       new TButton(getResources(),
-                  R.drawable.config,
-                  R.drawable.config_dn,
-                  R.drawable.config_off,
-                  configHandler);
+                  R.drawable.romo,
+                  R.drawable.romo,
+                  R.drawable.romo,
+                  emptyHandler);
+     
    }
    
    

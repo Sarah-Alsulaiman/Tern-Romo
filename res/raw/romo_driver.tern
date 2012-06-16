@@ -1,6 +1,73 @@
 
-import doForward()
+import doStartMotor(val)
 
-import doBackward()
+import doStopMotor()
 
-import doSing()
+import doSpin()
+
+import sendBeep()
+
+import sendSing()
+
+import sendGrowl()
+
+def doBeep():
+{
+   sendBeep()
+   wait 2000
+}
+
+def doSing():
+{
+   sendSing()
+   wait 2000
+}
+
+def doGrowl():
+{
+   sendGrowl()
+   wait 2000
+}
+
+def doForward():
+{
+   doStartMotor(1)
+   wait 1000
+   doStopMotor()
+   wait 1000   
+}
+
+
+def doBackward():
+{
+   doStartMotor(2)
+   wait 1000
+   doStopMotor()
+   wait 1000   
+}
+
+
+def doRight():
+{
+	doStartMotor(3)
+    wait 700
+    doStopMotor()
+    wait 1000
+}
+
+def doLeft():
+{
+	doStartMotor(4)
+    wait 700
+    doStopMotor()
+    wait 1000
+}
+
+
+def doSpin():
+{
+	doStartMotor(5)
+    wait 1000
+    doStopMotor()
+    wait 1000
+}

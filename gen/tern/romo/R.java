@@ -39,6 +39,7 @@ public final class R {
         public static final int restart=0x7f020016;
         public static final int restart_dn=0x7f020017;
         public static final int restart_off=0x7f020018;
+        public static final int romo=0x7f020019;
     }
     public static final class id {
         public static final int ProgramView=0x7f080005;
@@ -90,7 +91,7 @@ public final class R {
         public static final int wait_till_bt_on=0x7f070015;
     }
     public static final class xml {
-        public static final int nxt_statements=0x7f040000;
-        public static final int roberto_statements=0x7f040001;
+        public static final int roberto_statements=0x7f040000;
+        public static final int romo_statements=0x7f040001;
     }
 }

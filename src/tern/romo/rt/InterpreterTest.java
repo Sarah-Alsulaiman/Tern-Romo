@@ -1,11 +1,9 @@
 package tern.romo.rt;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import java.io.Reader;
 import java.io.FileReader;
-import java.io.BufferedReader;
 import tern.romo.compiler.TextCompiler;
 
 

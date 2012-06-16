@@ -24,7 +24,7 @@
  */
 package tern.romo;
 
-import android.graphics.Paint;
+
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.content.res.Resources;
@@ -154,7 +154,6 @@ public class TButton {
       if (!enabled) return false;
       int action = event.getAction();
       int id = event.getPointerId(0);
-      float x, y;
       
       switch (action & MotionEvent.ACTION_MASK) {
          

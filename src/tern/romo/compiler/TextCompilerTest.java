@@ -1,11 +1,10 @@
 package tern.romo.compiler;
 
-import junit.framework.Assert;
+
 import junit.framework.TestCase;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import net.percederberg.grammatica.parser.ParserLogException;
 
 
 

@@ -25,7 +25,6 @@
 package tern.romo;
 
 import tern.romo.rt.Robot;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.media.AudioManager;
 import android.util.Log;
@@ -44,10 +43,6 @@ public class Romo implements Robot {
    protected ProgramView view;
       
    protected RomoCommandInterface mCommandInterface;
-   
-   private int leftVal = 0x80;
-   private int rightVal = 0x80;
-   
    
    
    public Romo(ProgramView view, Context context) {
@@ -76,28 +71,58 @@ public class Romo implements Robot {
 	   //mCommandInterface.playMotorCommand(this.leftVal, this.rightVal);//f
       
    }
-
+   
    
    private void changeMove(int l, int r) {
-	   this.leftVal = l;
-	   this.rightVal = r;
-	   
-	   //view.repaint();
+	   mCommandInterface.playMotorCommand(l, r);
+	   view.repaint();
    }
    
    
-   public int doForward(int [] args) {
-	   int left = 0xFF;
-	   int right = 0xFF;
+   public int doStartMotor(int [] args) {
+	   int direction = args[0];
+	   int left = 0x80;
+	   int right = 0x80;
 	   
-	  // mCommandInterface.playMotorCommand(left, right);//f
-	   //mCommandInterface.playMotorCommand(left, right);//f
-	   //mCommandInterface.playMotorCommand(left, right);//f
+	   switch (direction) {
 	   
-	   Log.i(TAG, "forward executed");
-	   view.repaint();
+	   case 1:   //FORWARD
+		   left = 0xFF;
+		   right = 0xFF;   
+		   Log.i(TAG,"DIRECTION FORWARD");
+		   break;
+		   
+	   case 2:   //BACKWARD
+		   left =  0x00;
+		   right = 0x00;
+		   Log.i(TAG,"DIRECTION BACKWARD");
+		   break;
+		   
+	   case 3:   //RIGHT
+		   left =  0xFF;
+		   right = 0x00;
+		   Log.i(TAG,"DIRECTION RIGHT");
+		   break;
+		   
+	   case 4:   //LEFT
+		   left =  0x00;
+		   right = 0xFF;
+		   Log.i(TAG,"DIRECTION LEFT");
+		   break;
+	   }
 	   
-	  // changeMove(left, right);
+	   changeMove(left, right);
+	   return 0;
+	   
+   }
+   
+   public int doStopMotor(int [] args) {
+	   changeMove(0x80, 0x80);
+	   return 0;
+   }
+	   
+   
+  /** public int doForward(int [] args) {
 	// mCommandInterface.playMotorCommand(0xC0, 0xFF);//leftforward -- rightforward
 	// mCommandInterface.playMotorCommand(0xFF, 0xFF);//forward -- right
 	// mCommandInterface.playMotorCommand(0xFF, 0xC0);//rightforward -- right
@@ -111,27 +136,7 @@ public class Romo implements Robot {
 	// mCommandInterface.playMotorCommand(0x00, 0x00); //backward -- rightbackward
 	// mCommandInterface.playMotorCommand(0x00, 0x40); //rightbackward - rightbackward
 
-	   
       return 0;
-   }
-   
-   
-   /**public int doBackward(int [] args) {
-	   mCommandInterface.playMotorCommand(0x00, 0x00);
-	   mCommandInterface.playMotorCommand(0x80, 0x80);
-      return 0;
-   }//*/
-   
-   
-   public int doSing(int [] args) {
-	   int left= 0x80;
-	   int right = 0x80;
-	   //changeMove(left, right);
-	  //mCommandInterface.playMotorCommand(left, right);//f
-	   
-	   Log.i(TAG, "sing executed");
-	   view.repaint();
-	   return 0;
-	   }
+   } //*/
 
 }

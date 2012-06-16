@@ -30,7 +30,7 @@
    <!-- BACKWARD -->
    <statement code="185" name="Backward">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doBackward()
       </code>
@@ -40,7 +40,7 @@
    <!-- LEFT -->
    <statement code="1189" name="Left">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doLeft()
       </code>
@@ -50,7 +50,7 @@
    <!-- RIGHT -->
    <statement code="61" name="Right">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doRight()
       </code>
@@ -60,7 +60,7 @@
    <!-- SPIN -->
    <statement code="331" name="Spin">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doSpin()
       </code>
@@ -70,7 +70,7 @@
    <!-- GROWL -->
    <statement code="307" name="Growl">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doGrowl()
       </code>
@@ -80,7 +80,7 @@
    <!-- BEEP -->
    <statement code="661" name="Beep">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doBeep()
       </code>
@@ -100,7 +100,7 @@
    <!-- SHAKE -->
    <statement code="557" name="Shake">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doShake()
       </code>
@@ -110,7 +110,7 @@
    <!-- WIGGLE -->
    <statement code="155" name="Wiggle">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doWiggle()
       </code>
@@ -120,7 +120,7 @@
    <!-- STAR SKILL -->
    <statement code="279" name="StarSkill">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doStarSkill()
       </code>
@@ -130,7 +130,7 @@
    <!-- DIAMOND SKILL -->
    <statement code="285" name="DiamondSkill">
       <socket name="prev" />
-      <plug dx="4.2" dy="0" name="next" />
+      <plug dx="5" dy="0" name="next" />
       <code>
          doDiamondSkill()
       </code>

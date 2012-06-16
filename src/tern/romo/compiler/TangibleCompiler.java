@@ -35,7 +35,6 @@ import java.io.InputStreamReader;
 import android.util.Log;
 import android.graphics.Bitmap;
 import android.content.res.Resources;
-import android.content.res.XmlResourceParser;
 
 import topcodes.*;
 
@@ -155,7 +154,7 @@ public class TangibleCompiler {
       
       tcode += sw.toString();
       program.setTextCode(tcode);
-      Log.i(TAG, tcode);
+      //Log.i(TAG, tcode);
 
       
       //-----------------------------------------------------------
@@ -163,7 +162,7 @@ public class TangibleCompiler {
       //-----------------------------------------------------------
       String pcode = tcompiler.compile(tcode);
       program.setAssemblyCode(pcode);
-      Log.i(TAG, pcode);
+      //Log.i(TAG, pcode);
 
       return program;
    }
