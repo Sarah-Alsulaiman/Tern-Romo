@@ -40,6 +40,7 @@ public final class R {
         public static final int restart_dn=0x7f020017;
         public static final int restart_off=0x7f020018;
         public static final int romo=0x7f020019;
+        public static final int smile=0x7f02001a;
     }
     public static final class id {
         public static final int ProgramView=0x7f080005;

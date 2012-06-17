@@ -25,34 +25,39 @@
 package tern.romo;
 
 import tern.romo.rt.Robot;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.util.Log;
-import android.content.*;
-import com.romotive.library.*;
+
+import com.romotive.library.RomoCommandInterface;
 
 
 /**
  * Romo implementation of Robot
  */
 public class Romo implements Robot {
-   
+	RomoCommandInterface mCommandInterface = new RomoCommandInterface();
+	boolean check = true;
+	int TIMEOUT = 1000;
+	private long last_tick;
+	
+	
    public static final String TAG = "Romo";
    
    /** Reference to the View object */
    protected ProgramView view;
+   
+   protected String img = "smile";
       
-   protected RomoCommandInterface mCommandInterface;
+   //protected Drawable img;
    
    
    public Romo(ProgramView view, Context context) {
       this.view = view;
-      mCommandInterface = new RomoCommandInterface();
-      // Initialize your RomoCommandInterface
-      AudioManager manager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-      manager.setStreamVolume(AudioManager.STREAM_MUSIC, manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
    }
-   
    
    /**
     * These functions are inherited from the Robot interface but not
@@ -68,12 +73,17 @@ public class Romo implements Robot {
    
     
    public void draw(Canvas canvas) {
-	   //mCommandInterface.playMotorCommand(this.leftVal, this.rightVal);//f
+	   
+	 /**  Resources res = view.getResources();
+       int id = res.getIdentifier(this.img, "drawable", "tern.romo");
+       Drawable current = res.getDrawable(id);
+	   current.draw(canvas);*/
       
    }
    
    
-   private void changeMove(int l, int r) {
+   private void changeMove(int l, int r) {   
+	   Log.i(TAG, "DIRECTIONS: " + l + ", " +r );
 	   mCommandInterface.playMotorCommand(l, r);
 	   view.repaint();
    }
@@ -120,23 +130,58 @@ public class Romo implements Robot {
 	   changeMove(0x80, 0x80);
 	   return 0;
    }
-	   
    
-  /** public int doForward(int [] args) {
-	// mCommandInterface.playMotorCommand(0xC0, 0xFF);//leftforward -- rightforward
-	// mCommandInterface.playMotorCommand(0xFF, 0xFF);//forward -- right
-	// mCommandInterface.playMotorCommand(0xFF, 0xC0);//rightforward -- right
+   
+   public int sendBeep(int [] args){
+	   	last_tick = System.currentTimeMillis();
+	   	mCommandInterface.playMotorCommand(0xFF, 0xFF); //forward
+	   	if (timer()) {
+	   		last_tick = System.currentTimeMillis();
+	   		check = true;
+	   		mCommandInterface.playMotorCommand(0x00, 0x00); //backward
+	   		
+	   		if (timer()) {
+	   			last_tick = System.currentTimeMillis();
+	   			check = true;
+	       		mCommandInterface.playMotorCommand(0x80, 0x80); //stop
+	       		}
+	   	}
+	   	
+	   	return 0;
+   }
+   
+   
+   public boolean timer() {
+	   	while (check) {
+				long elapsed = (System.currentTimeMillis() - last_tick);
+				if (elapsed > TIMEOUT) {
+					Log.i("ROMO","INSIDE IF");
+					check = false;}
+			}
+			return !check;
+	}
+   
+   
 	   
-	// mCommandInterface.playMotorCommand(0x00, 0xFF);//left -- leftbackward
-	// mCommandInterface.playMotorCommand(0x80, 0x80);//stop -- stop
-	// mCommandInterface.playMotorCommand(0xFF, 0x00);//right -- leftforward --right
+   public int doEnd(int [] args) {
+	   this.img = "smile";
+	   changeMove(0,0);
+	   return 0;
+   }
+   
+ /**
+	// mCommandInterface.playMotorCommand(0xC0, 0xFF);//leftforward
+	// mCommandInterface.playMotorCommand(0xFF, 0xFF);//forward
+	// mCommandInterface.playMotorCommand(0xFF, 0xC0);//rightforward
+	   
+	// mCommandInterface.playMotorCommand(0x00, 0xFF);//left
+	// mCommandInterface.playMotorCommand(0x80, 0x80);//stop
+	// mCommandInterface.playMotorCommand(0xFF, 0x00);//right
 	   
 	   
-	// mCommandInterface.playMotorCommand(0x40, 0x00);//leftbackward -- leftforward
-	// mCommandInterface.playMotorCommand(0x00, 0x00); //backward -- rightbackward
-	// mCommandInterface.playMotorCommand(0x00, 0x40); //rightbackward - rightbackward
-
-      return 0;
-   } //*/
+	// mCommandInterface.playMotorCommand(0x40, 0x00);//leftbackward
+	// mCommandInterface.playMotorCommand(0x00, 0x00); //backward
+	// mCommandInterface.playMotorCommand(0x00, 0x40); //rightbackward
+//*/
 
 }

@@ -3,13 +3,9 @@ import doStartMotor(val)
 
 import doStopMotor()
 
-import doSpin()
-
 import sendBeep()
 
-import sendSing()
-
-import sendGrowl()
+import doEnd()
 
 def doBeep():
 {
@@ -17,17 +13,6 @@ def doBeep():
    wait 2000
 }
 
-def doSing():
-{
-   sendSing()
-   wait 2000
-}
-
-def doGrowl():
-{
-   sendGrowl()
-   wait 2000
-}
 
 def doForward():
 {

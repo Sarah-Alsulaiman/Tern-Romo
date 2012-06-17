@@ -24,6 +24,7 @@
  */
 package tern.romo;
 
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -41,10 +42,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.text.SimpleDateFormat;
 import com.lego.minddroid.DeviceListActivity;
+import com.romotive.library.RomoCommandInterface;
 
 
 public class Tern extends Activity {
-   
+  
    public static final String TAG = "Tern";
    
    public static final int CONNECT_DEVICE  = 1000;
@@ -85,9 +87,11 @@ public class Tern extends Activity {
       this.sdf = new SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US);
       
       this.image_dir = Environment.getExternalStorageDirectory();
+      
+     
    }
    
-   
+ 
 //----------------------------------------------------------------   
 // onStart
 //----------------------------------------------------------------   

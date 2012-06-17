@@ -24,6 +24,8 @@
  */
 package tern.romo;
 
+import com.romotive.library.RomoCommandInterface;
+
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -53,7 +55,7 @@ import topcodes.TopCode;
  * visuals
  */
 public class ProgramView extends View implements Debugger, Runnable {
-   
+	 
    public static final String TAG = "Tern";
    
    private int POP_SOUND = 0;
@@ -294,9 +296,10 @@ public class ProgramView extends View implements Debugger, Runnable {
          repaint();
       } catch (Exception x) {
          Log.e(TAG, "Interpreter error", x);
-      }
+      }//*/
    }
-
+   
+   
    
 /**
  * Handle button presses
