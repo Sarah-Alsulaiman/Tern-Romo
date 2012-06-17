@@ -62,6 +62,8 @@ public class ProgramView extends View implements Debugger, Runnable {
    public static final int COMPILE_SUCCESS = 100;
    public static final int COMPILE_FAILURE = 101;
    
+   protected boolean running = false;
+   
    
    
    /** Used to compile bitmap images into programs */
@@ -293,6 +295,7 @@ public class ProgramView extends View implements Debugger, Runnable {
          interp.clear();
          interp.load(program.getAssemblyCode());
          //interp.start();
+         this.running = true;
          repaint();
       } catch (Exception x) {
          Log.e(TAG, "Interpreter error", x);
@@ -331,27 +334,112 @@ public class ProgramView extends View implements Debugger, Runnable {
       // clear background 
       canvas.drawRGB(210, 210, 210);
       
-      // draw logo
-      dw = logo.getIntrinsicWidth();
-      dh = logo.getIntrinsicHeight();
-      ds = Math.min(0.8f, 0.8f * w / dw);
-      dw *= ds;
-      dh *= ds;
-      dx = w/2 - dw/2;
-      dy = h/2 - dh/2;
-      logo.setBounds(dx, dy, dx + dw, dy + dh);
-      logo.draw(canvas);
+   // Draw CAMERA button
+      dw = this.camera.getWidth();
+      dh = this.camera.getHeight();
+      this.camera.setLocation(w - dw - 12, h - dh - 12);
+      this.camera.setEnabled( !compiling );
+      this.camera.draw(canvas);
       
-      // draw message for current statement      
-      if (message != null && bitmap != null) {
-         Paint font = new Paint(Paint.ANTI_ALIAS_FLAG);
-         font.setColor(Color.BLACK);
-         font.setStyle(Style.FILL);
-         font.setTextSize(30);
-         font.setTextAlign(Paint.Align.CENTER);
-         canvas.drawText(this.message, w/2, 27, font);
+      // Draw GALLERY button
+      dx = w - gallery.getWidth() - camera.getWidth() - 36;
+      dy = h - gallery.getHeight() - 5;
+      this.gallery.setLocation(dx, dy);
+      this.gallery.setEnabled( !compiling );
+      this.gallery.draw(canvas);
+      
+      // Draw CONFIG button 
+      this.config.setLocation(3, h - config.getHeight() - 3);
+      this.config.setEnabled( true );
+      //this.config.setUpImage(
+      //      getResources(),
+      //      robot.isConnected() ? R.drawable.config : R.drawable.config_off );
+      this.config.draw(canvas);
+      
+      if (!running) {
+    	  
+    	// draw logo
+          dw = logo.getIntrinsicWidth();
+          dh = logo.getIntrinsicHeight();
+          ds = Math.min(0.8f, 0.8f * w / dw);
+          dw *= ds;
+          dh *= ds;
+          dx = w/2 - dw/2;
+          dy = h/2 - dh/2;
+          logo.setBounds(dx, dy, dx + dw, dy + dh);
+          logo.draw(canvas);
+          
+    	  
+    	  
       }
       
+      else {  //there is a program running
+    	  
+    	  /**
+    	  // draw message for current statement      
+          if (message != null && bitmap != null) {
+             Paint font = new Paint(Paint.ANTI_ALIAS_FLAG);
+             font.setColor(Color.BLACK);
+             font.setStyle(Style.FILL);
+             font.setTextSize(30);
+             font.setTextAlign(Paint.Align.CENTER);
+             canvas.drawText(this.message, w/2, 27, font);
+          }//*/
+          
+    	
+          
+          // Draw robot
+          this.robot.draw(canvas);
+          
+         
+          // Draw play control toolbox
+          dw = this.play.getWidth();
+          dh = this.play.getHeight();
+          this.play.setLocation(w/2 + 5, h - dh - 15);
+          this.pause.setLocation(w/2 + 5, h - dh - 15);
+          this.restart.setLocation(w/2 - dw - 5, h - dh - 15);
+
+          // Draw toolbox border
+          if (program != null && bitmap != null) {
+             dx = w/2 - dw - 20;
+             dy = h - dh - 25;
+             dw = this.play.getWidth() * 2 + 40;
+             dh = this.play.getHeight() + 20;
+             RectF toolbox = new RectF(dx, dy, dx + dw, dy + dh);
+             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+             paint.setColor(Color.WHITE);
+             paint.setStyle(Paint.Style.FILL);
+             canvas.drawRoundRect(toolbox, 10, 10, paint);
+             paint.setColor(Color.BLACK);
+             paint.setStyle(Paint.Style.STROKE);
+             canvas.drawRoundRect(toolbox, 10, 10, paint);
+          }
+          
+          this.play.setEnabled( false );
+          this.pause.setEnabled( false );
+          this.restart.setEnabled( false );
+          
+          if (program != null && bitmap != null) {
+             this.restart.enable();
+             this.restart.draw(canvas);
+             if (interp.isPaused() || interp.isStopped()) {
+                this.play.enable();
+                this.play.draw(canvas);
+             } else {
+                this.pause.enable();
+                this.pause.draw(canvas);
+             }
+          } 
+          
+          
+          
+          
+      }
+      
+      
+     
+      
+      /**
       // Draw program bitmap with debug info
       if (bitmap != null) {
          dw = bitmap.getWidth();
@@ -382,70 +470,8 @@ public class ProgramView extends View implements Debugger, Runnable {
          }
          canvas.restore();
       }
+      */
       
-      // Draw robot
-      this.robot.draw(canvas);
-      
-      // Draw CAMERA button
-      dw = this.camera.getWidth();
-      dh = this.camera.getHeight();
-      this.camera.setLocation(w - dw - 12, h - dh - 12);
-      this.camera.setEnabled( !compiling );
-      this.camera.draw(canvas);
-      
-      // Draw GALLERY button
-      dx = w - gallery.getWidth() - camera.getWidth() - 36;
-      dy = h - gallery.getHeight() - 5;
-      this.gallery.setLocation(dx, dy);
-      this.gallery.setEnabled( !compiling );
-      this.gallery.draw(canvas);
-      
-      // Draw CONFIG button 
-      this.config.setLocation(3, h - config.getHeight() - 3);
-      this.config.setEnabled( true );
-      //this.config.setUpImage(
-      //      getResources(),
-      //      robot.isConnected() ? R.drawable.config : R.drawable.config_off );
-      this.config.draw(canvas);
-      
-      // Draw play control toolbox
-      dw = this.play.getWidth();
-      dh = this.play.getHeight();
-      this.play.setLocation(w/2 + 5, h - dh - 15);
-      this.pause.setLocation(w/2 + 5, h - dh - 15);
-      this.restart.setLocation(w/2 - dw - 5, h - dh - 15);
-
-      // Draw toolbox border
-      if (program != null && bitmap != null) {
-         dx = w/2 - dw - 20;
-         dy = h - dh - 25;
-         dw = this.play.getWidth() * 2 + 40;
-         dh = this.play.getHeight() + 20;
-         RectF toolbox = new RectF(dx, dy, dx + dw, dy + dh);
-         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-         paint.setColor(Color.WHITE);
-         paint.setStyle(Paint.Style.FILL);
-         canvas.drawRoundRect(toolbox, 10, 10, paint);
-         paint.setColor(Color.BLACK);
-         paint.setStyle(Paint.Style.STROKE);
-         canvas.drawRoundRect(toolbox, 10, 10, paint);
-      }
-      
-      this.play.setEnabled( false );
-      this.pause.setEnabled( false );
-      this.restart.setEnabled( false );
-      
-      if (program != null && bitmap != null) {
-         this.restart.enable();
-         this.restart.draw(canvas);
-         if (interp.isPaused() || interp.isStopped()) {
-            this.play.enable();
-            this.play.draw(canvas);
-         } else {
-            this.pause.enable();
-            this.pause.draw(canvas);
-         }
-      } 
    }
 
    
@@ -462,7 +488,7 @@ public class ProgramView extends View implements Debugger, Runnable {
 /**
  * DEBUGGER IMPLEMENTATION
  */
-   public void processStarted(tern.romo.rt.Process p) { }
+   public void processStarted(tern.romo.rt.Process p) { this.running = true; }
    
    
    public void processStopped(tern.romo.rt.Process p) { }
@@ -472,7 +498,7 @@ public class ProgramView extends View implements Debugger, Runnable {
       try {
          this.trace_id = Integer.parseInt(message);
          sounds.play(POP_SOUND, 1, 1, 1, 0, 1);
-         repaint();
+         //repaint();
       } catch (Exception x) {
          this.trace_id = -1;
       }
@@ -482,7 +508,7 @@ public class ProgramView extends View implements Debugger, Runnable {
    public void print(tern.romo.rt.Process p, String message) {
       Log.i(TAG, message);
       this.message = message;
-      repaint();
+      //repaint();
    }
    
    

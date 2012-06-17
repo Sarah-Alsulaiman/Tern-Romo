@@ -42,19 +42,22 @@ import com.romotive.library.RomoCommandInterface;
  */
 public class Romo implements Robot {
 	RomoCommandInterface mCommandInterface = new RomoCommandInterface();
+	
 	boolean check = true;
 	int TIMEOUT = 1000;
 	private long last_tick;
 	
 	
-	int leftVal;
-	int rightVal;
-   public static final String TAG = "Romo";
+	private int leftVal;
+	private int rightVal;
+   
+	public static final String TAG = "Romo";
    
    /** Reference to the View object */
    protected ProgramView view;
    
    protected String img = "smile";
+   private boolean paint = false;
       
    //protected Drawable img;
    
@@ -76,11 +79,30 @@ public class Romo implements Robot {
    }
    
     
-   public void draw(Canvas canvas) {   
-	 /**  Resources res = view.getResources();
-       int id = res.getIdentifier(this.img, "drawable", "tern.romo");
-       Drawable current = res.getDrawable(id);
-	   current.draw(canvas);*/
+   public void draw(Canvas canvas) { 
+	   
+	   if (this.paint) {
+		   
+		   Resources res = view.getResources();
+	       int id = res.getIdentifier(this.img, "drawable", "tern.romo");
+	       Log.i(TAG, this.img);
+	       Drawable current = res.getDrawable(id);
+	       
+	       int w = view.getWidth();
+	       int h = view.getHeight();
+	       int dw = current.getIntrinsicWidth()/2;
+	       int dh = current.getIntrinsicHeight()/2;
+	       int dx = w/2 - dw/2;
+	       int dy = h/2 - dh/2;
+	       current.setBounds(dx, dy, dx + dw, dy + dh);
+	       
+		   current.draw(canvas);//*/
+		   
+		   
+	   }
+	   
+	   this.paint = false;
+	   
    }
  
 
@@ -124,21 +146,33 @@ public class Romo implements Robot {
    
 	   
    public int doEnd(int [] args) {
-	   this.img = "smile";
 	   return 0;
    }
    
    
    public void execute() {
-	      repaintHandler.sendEmptyMessage(0);
+	      executeHandler.sendEmptyMessage(0);
 	   }
    
-   private Handler repaintHandler = new Handler() {
+   private Handler executeHandler = new Handler() {
 	      @Override public void handleMessage(Message msg) {
 	         action();
 	      }
 	      
    };
+   
+   
+   public void repaint() {
+	      repaintHandler.sendEmptyMessage(0);
+	   }
+
+   private Handler repaintHandler = new Handler() {
+	      @Override public void handleMessage(Message msg) {
+	         view.repaint();
+	      }
+	      
+};
+
    
    public void action() {
 		mCommandInterface.playMotorCommand(this.leftVal, this.rightVal);
@@ -146,7 +180,7 @@ public class Romo implements Robot {
    
    
    public int sendBeep(int [] args){
-	   this.leftVal = this.rightVal = 0xFF;
+	  /** this.leftVal = this.rightVal = 0xFF;
 	   execute();
 	   
 	   last_tick = System.currentTimeMillis();
@@ -161,7 +195,12 @@ public class Romo implements Robot {
 		   		this.leftVal = this.rightVal = 0x80;
 		   		execute();}
 	   } 
-	   //action();
+	   //action();//*/
+	   
+	   this.img = "smile";
+	   this.paint = true;
+	   repaint();
+	   
 	   return 0;
    }
    
