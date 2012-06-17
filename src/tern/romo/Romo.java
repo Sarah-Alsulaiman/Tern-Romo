@@ -30,6 +30,8 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.romotive.library.RomoCommandInterface;
@@ -45,6 +47,8 @@ public class Romo implements Robot {
 	private long last_tick;
 	
 	
+	int leftVal;
+	int rightVal;
    public static final String TAG = "Romo";
    
    /** Reference to the View object */
@@ -72,102 +76,95 @@ public class Romo implements Robot {
    }
    
     
-   public void draw(Canvas canvas) {
-	   
+   public void draw(Canvas canvas) {   
 	 /**  Resources res = view.getResources();
        int id = res.getIdentifier(this.img, "drawable", "tern.romo");
        Drawable current = res.getDrawable(id);
 	   current.draw(canvas);*/
-      
    }
-   
-   
-   private void changeMove(int l, int r) {   
-	   Log.i(TAG, "DIRECTIONS: " + l + ", " +r );
-	   mCommandInterface.playMotorCommand(l, r);
-	   view.repaint();
+ 
+
+   public int doMove(int [] args) {
+	   execute();
+	   return 0;
+	   
    }
-   
    
    public int doStartMotor(int [] args) {
-	   int direction = args[0];
-	   int left = 0x80;
-	   int right = 0x80;
+	   int motor = args[0];
+	   int power = args[1];
 	   
-	   switch (direction) {
-	   
-	   case 1:   //FORWARD
-		   left = 0xFF;
-		   right = 0xFF;   
-		   Log.i(TAG,"DIRECTION FORWARD");
-		   break;
-		   
-	   case 2:   //BACKWARD
-		   left =  0x00;
-		   right = 0x00;
-		   Log.i(TAG,"DIRECTION BACKWARD");
-		   break;
-		   
-	   case 3:   //RIGHT
-		   left =  0xFF;
-		   right = 0x00;
-		   Log.i(TAG,"DIRECTION RIGHT");
-		   break;
-		   
-	   case 4:   //LEFT
-		   left =  0x00;
-		   right = 0xFF;
-		   Log.i(TAG,"DIRECTION LEFT");
-		   break;
+	   if (motor == 1) {
+		   this.rightVal = power;
 	   }
-	   
-	   changeMove(left, right);
+	   else {
+		   this.leftVal = power;
+	   }
+	   //execute();
 	   return 0;
 	   
    }
    
    public int doStopMotor(int [] args) {
-	   changeMove(0x80, 0x80);
+	   this.leftVal = this.rightVal = 0x80;
+	   execute();
 	   return 0;
    }
-   
-   
-   public int sendBeep(int [] args){
-	   	last_tick = System.currentTimeMillis();
-	   	mCommandInterface.playMotorCommand(0xFF, 0xFF); //forward
-	   	if (timer()) {
-	   		last_tick = System.currentTimeMillis();
-	   		check = true;
-	   		mCommandInterface.playMotorCommand(0x00, 0x00); //backward
-	   		
-	   		if (timer()) {
-	   			last_tick = System.currentTimeMillis();
-	   			check = true;
-	       		mCommandInterface.playMotorCommand(0x80, 0x80); //stop
-	       		}
-	   	}
-	   	
-	   	return 0;
-   }
-   
    
    public boolean timer() {
 	   	while (check) {
 				long elapsed = (System.currentTimeMillis() - last_tick);
 				if (elapsed > TIMEOUT) {
-					Log.i("ROMO","INSIDE IF");
 					check = false;}
 			}
-			return !check;
+	   		
+	   	return !check;
 	}
    
    
 	   
    public int doEnd(int [] args) {
 	   this.img = "smile";
-	   changeMove(0,0);
 	   return 0;
    }
+   
+   
+   public void execute() {
+	      repaintHandler.sendEmptyMessage(0);
+	   }
+   
+   private Handler repaintHandler = new Handler() {
+	      @Override public void handleMessage(Message msg) {
+	         action();
+	      }
+	      
+   };
+   
+   public void action() {
+		mCommandInterface.playMotorCommand(this.leftVal, this.rightVal);
+	}
+   
+   
+   public int sendBeep(int [] args){
+	   this.leftVal = this.rightVal = 0xFF;
+	   execute();
+	   
+	   last_tick = System.currentTimeMillis();
+	   if (timer()) {
+	   		check = true;
+	   		this.leftVal = this.rightVal = 0x00;
+	   		execute();
+	   		
+	   		last_tick = System.currentTimeMillis();
+	   		if (timer()) {
+		   		check = true;
+		   		this.leftVal = this.rightVal = 0x80;
+		   		execute();}
+	   } 
+	   //action();
+	   return 0;
+   }
+   
    
  /**
 	// mCommandInterface.playMotorCommand(0xC0, 0xFF);//leftforward

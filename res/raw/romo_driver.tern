@@ -1,7 +1,9 @@
 
-import doStartMotor(val)
+import doStartMotor(motor, power)
 
 import doStopMotor()
+
+import doMove()
 
 import sendBeep()
 
@@ -16,7 +18,9 @@ def doBeep():
 
 def doForward():
 {
-   doStartMotor(1)
+   doStartMotor(0, 255)
+   doStartMotor(1, 255)
+   doMove()
    wait 1000
    doStopMotor()
    wait 1000   
@@ -25,7 +29,9 @@ def doForward():
 
 def doBackward():
 {
-   doStartMotor(2)
+   doStartMotor(0, 0)
+   doStartMotor(1, 0)
+   doMove()
    wait 1000
    doStopMotor()
    wait 1000   
@@ -34,16 +40,20 @@ def doBackward():
 
 def doRight():
 {
-	doStartMotor(3)
-    wait 700
+	doStartMotor(0, 255)
+	doStartMotor(1, 0)
+	doMove()
+    wait 1000
     doStopMotor()
     wait 1000
 }
 
 def doLeft():
 {
-	doStartMotor(4)
-    wait 700
+	doStartMotor(0, 0)
+	doStartMotor(1, 255)
+	doMove()
+    wait 1000
     doStopMotor()
     wait 1000
 }
@@ -51,8 +61,55 @@ def doLeft():
 
 def doSpin():
 {
-	doStartMotor(5)
-    wait 1000
+	doStartMotor(0, 0)
+	doStartMotor(1, 255)
+	doMove()
+	wait 3300
     doStopMotor()
     wait 1000
+}
+
+def doWiggle():
+{
+   a = 0
+   pa = 1
+   pb = -1
+   while a < 5:
+   {
+      doStartMotor(0, 255)
+      doStartMotor(1, 140)
+      doMove()
+      wait 200
+      doStartMotor(0, 140)
+      doStartMotor(1, 255)
+      doMove()
+      wait 200
+      a = a + 1
+   }
+   doStopMotor()
+   wait 1000
+}
+
+
+def doShake():
+{
+   a = 0
+   tempA = 0
+   tempB = 0
+   pa = 255
+   pb = 0
+   while a < 10:
+   {
+   	  tempA = pa
+   	  tempB = pb
+      doStartMotor(0, pa)
+      doStartMotor(1, pb)
+      doMove()
+      wait 100
+      pa = tempB
+      pb = tempA
+      a = a + 1
+   }
+   doStopMotor()
+   wait 1000
 }
