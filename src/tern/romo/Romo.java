@@ -57,7 +57,7 @@ public class Romo implements Robot {
    protected ProgramView view;
    
    protected String img = "smile";
-   private boolean paint = false;
+   public static boolean paint = false;
       
    //protected Drawable img;
    
@@ -122,7 +122,7 @@ public class Romo implements Robot {
 	   else {
 		   this.leftVal = power;
 	   }
-	   //execute();
+	   execute();
 	   return 0;
 	   
    }
@@ -142,12 +142,6 @@ public class Romo implements Robot {
 	   		
 	   	return !check;
 	}
-   
-   
-	   
-   public int doEnd(int [] args) {
-	   return 0;
-   }
    
    
    public void execute() {
@@ -177,6 +171,11 @@ public class Romo implements Robot {
    public void action() {
 		mCommandInterface.playMotorCommand(this.leftVal, this.rightVal);
 	}
+   
+   
+   public int doEnd(int [] args) {
+	   return 0;
+   }
    
    
    public int sendBeep(int [] args){

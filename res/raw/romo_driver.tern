@@ -20,7 +20,7 @@ def doForward():
 {
    doStartMotor(0, 255)
    doStartMotor(1, 255)
-   doMove()
+   
    wait 1000
    doStopMotor()
    wait 1000   
@@ -31,7 +31,7 @@ def doBackward():
 {
    doStartMotor(0, 0)
    doStartMotor(1, 0)
-   doMove()
+   
    wait 1000
    doStopMotor()
    wait 1000   
@@ -42,7 +42,7 @@ def doRight():
 {
 	doStartMotor(0, 255)
 	doStartMotor(1, 0)
-	doMove()
+	
     wait 1000
     doStopMotor()
     wait 1000
@@ -52,7 +52,7 @@ def doLeft():
 {
 	doStartMotor(0, 0)
 	doStartMotor(1, 255)
-	doMove()
+	
     wait 1000
     doStopMotor()
     wait 1000
@@ -61,9 +61,9 @@ def doLeft():
 
 def doSpin():
 {
-	doStartMotor(0, 0)
-	doStartMotor(1, 255)
-	doMove()
+	doStartMotor(0, 255)
+	doStartMotor(1, 0)
+	
 	wait 3300
     doStopMotor()
     wait 1000
@@ -78,11 +78,11 @@ def doWiggle():
    {
       doStartMotor(0, 255)
       doStartMotor(1, 140)
-      doMove()
+      
       wait 200
       doStartMotor(0, 140)
       doStartMotor(1, 255)
-      doMove()
+      
       wait 200
       a = a + 1
    }
@@ -104,7 +104,7 @@ def doShake():
    	  tempB = pb
       doStartMotor(0, pa)
       doStartMotor(1, pb)
-      doMove()
+     
       wait 100
       pa = tempB
       pb = tempA

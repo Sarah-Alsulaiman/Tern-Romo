@@ -374,7 +374,6 @@ public class ProgramView extends View implements Debugger, Runnable {
       }
       
       else {  //there is a program running
-    	  
     	  /**
     	  // draw message for current statement      
           if (message != null && bitmap != null) {
@@ -384,14 +383,30 @@ public class ProgramView extends View implements Debugger, Runnable {
              font.setTextSize(30);
              font.setTextAlign(Paint.Align.CENTER);
              canvas.drawText(this.message, w/2, 27, font);
-          }//*/
-          
+          }*/
     	
+          
+          if (!Romo.paint) {
+        	 
+        	  if (bitmap != null) {
+                  dw = bitmap.getWidth();
+                  dh = bitmap.getHeight();
+                  ds = ((float)h / dh) * 0.85f;
+                  dw *= ds;
+                  dh *= ds;
+                  dx = w/2 - dw/2;
+                  dy = h/2 - dh/2;
+
+                  RectF dest = new RectF(dx, dy, dx + dw, dy + dh);
+                  canvas.drawBitmap(bitmap, null, dest, null);
+               }
+        	  
+          }
+         
           
           // Draw robot
           this.robot.draw(canvas);
           
-         
           // Draw play control toolbox
           dw = this.play.getWidth();
           dh = this.play.getHeight();
@@ -429,7 +444,11 @@ public class ProgramView extends View implements Debugger, Runnable {
                 this.pause.enable();
                 this.pause.draw(canvas);
              }
-          } 
+          }
+          
+          
+          
+           
           
           
           
