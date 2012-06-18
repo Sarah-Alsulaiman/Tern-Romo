@@ -102,6 +102,7 @@ public class Romo implements Robot {
 	   }
 	   
 	   this.paint = false;
+	   view.repaint(5000);
 	   
    }
  
