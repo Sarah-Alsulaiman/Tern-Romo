@@ -64,7 +64,7 @@ def doSpin():
 	doStartMotor(0, 255)
 	doStartMotor(1, 0)
 	
-	wait 3300
+	wait 3700
     doStopMotor()
     wait 1000
 }

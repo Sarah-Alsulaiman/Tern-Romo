@@ -50,16 +50,16 @@ public class Romo implements Robot {
 	
 	private int leftVal;
 	private int rightVal;
+	
+	private String img;
    
 	public static final String TAG = "Romo";
    
    /** Reference to the View object */
    protected ProgramView view;
    
-   protected String img = "smile";
    public static boolean paint = false;
-      
-   //protected Drawable img;
+   
    
    
    public Romo(ProgramView view, Context context) {
@@ -74,14 +74,16 @@ public class Romo implements Robot {
    public void setAddress(String address) {  }
    public void openConnection() { }
    public void closeConnection() { }
-   public void allStop() {
+   public void allStop( ) {
+	   this.leftVal = this.rightVal = 0x80;
+	   execute();
       
    }
    
-    
+   // Called when something needs to be drawn on the screen
    public void draw(Canvas canvas) { 
 	   
-	   if (this.paint) {
+	   if (paint) {
 		   
 		   Resources res = view.getResources();
 	       int id = res.getIdentifier(this.img, "drawable", "tern.romo");
@@ -97,21 +99,17 @@ public class Romo implements Robot {
 	       current.setBounds(dx, dy, dx + dw, dy + dh);
 	       
 		   current.draw(canvas);//*/
+		   current = null;
 		   
 		   
 	   }
 	   
-	   this.paint = false;
+	   paint = false;
 	   view.repaint(5000);
 	   
    }
  
 
-   public int doMove(int [] args) {
-	   execute();
-	   return 0;
-	   
-   }
    
    public int doStartMotor(int [] args) {
 	   int motor = args[0];
@@ -128,21 +126,12 @@ public class Romo implements Robot {
 	   
    }
    
+   
    public int doStopMotor(int [] args) {
 	   this.leftVal = this.rightVal = 0x80;
 	   execute();
 	   return 0;
    }
-   
-   public boolean timer() {
-	   	while (check) {
-				long elapsed = (System.currentTimeMillis() - last_tick);
-				if (elapsed > TIMEOUT) {
-					check = false;}
-			}
-	   		
-	   	return !check;
-	}
    
    
    public void execute() {
@@ -156,6 +145,10 @@ public class Romo implements Robot {
 	      
    };
    
+   public void action() {
+		mCommandInterface.playMotorCommand(this.leftVal, this.rightVal);
+	}
+   
    
    public void repaint() {
 	      repaintHandler.sendEmptyMessage(0);
@@ -165,42 +158,23 @@ public class Romo implements Robot {
 	      @Override public void handleMessage(Message msg) {
 	         view.repaint();
 	      }
-	      
-};
+	};
 
-   
-   public void action() {
-		mCommandInterface.playMotorCommand(this.leftVal, this.rightVal);
-	}
+  
    
    
-   public int doEnd(int [] args) {
+   //called from the interpreter when encountering a Beep block
+   public int sendBeep(int [] args){  
+	   this.img = "angry";
+	   paint = true;
+	   repaint();
+	   
 	   return 0;
    }
    
    
-   public int sendBeep(int [] args){
-	  /** this.leftVal = this.rightVal = 0xFF;
-	   execute();
-	   
-	   last_tick = System.currentTimeMillis();
-	   if (timer()) {
-	   		check = true;
-	   		this.leftVal = this.rightVal = 0x00;
-	   		execute();
-	   		
-	   		last_tick = System.currentTimeMillis();
-	   		if (timer()) {
-		   		check = true;
-		   		this.leftVal = this.rightVal = 0x80;
-		   		execute();}
-	   } 
-	   //action();//*/
-	   
-	   this.img = "smile";
-	   this.paint = true;
-	   repaint();
-	   
+   //currently does nothing
+   public int doEnd(int [] args) {
 	   return 0;
    }
    

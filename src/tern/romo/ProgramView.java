@@ -24,7 +24,7 @@
  */
 package tern.romo;
 
-import com.romotive.library.RomoCommandInterface;
+
 
 import android.os.Handler;
 import android.os.Message;
@@ -116,6 +116,8 @@ public class ProgramView extends View implements Debugger, Runnable {
    
    /** Connection config button */
    protected TButton config;
+   
+   protected String img = "smile";
 
    
    public ProgramView(Context context) {
@@ -389,19 +391,24 @@ public class ProgramView extends View implements Debugger, Runnable {
           if (!Romo.paint) {
         	 
         	  if (bitmap != null) {
-                  dw = bitmap.getWidth();
-                  dh = bitmap.getHeight();
-                  ds = ((float)h / dh) * 0.85f;
-                  dw *= ds;
-                  dh *= ds;
-                  dx = w/2 - dw/2;
-                  dy = h/2 - dh/2;
-
-                  RectF dest = new RectF(dx, dy, dx + dw, dy + dh);
-                  canvas.drawBitmap(bitmap, null, dest, null);
-               }
-        	  
+		           int id = res.getIdentifier(this.img, "drawable", "tern.romo");
+			       Log.i(TAG, this.img);
+			       Drawable current = res.getDrawable(id);
+			       
+			        dw = current.getIntrinsicWidth()/2;
+			        dh = current.getIntrinsicHeight()/2;
+			        dx = w/2 - dw/2;
+			        dy = h/2 - dh/2;
+			       current.setBounds(dx, dy, dx + dw, dy + dh);
+			       
+				   current.draw(canvas);
+				   current = null;
+		               }
+    	 
           }
+    	  
+    	 
+	      
          
           
           // Draw robot
